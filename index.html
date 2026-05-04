@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SK Karamatoi – Sekolah Kebangsaan Karamatoi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ============================================================
+       ✏️ PANDUAN EDIT VS CODE:
+       1. Tekan Ctrl+F → cari "✏️ EDIT" untuk jumpa tempat edit
+       2. Tekan Ctrl+G → taip nombor baris untuk pergi terus
+       3. Bahagian DATA boleh ditukar tanpa sentuh CSS/JS
+    ============================================================ */
+
+    /* ── WARNA TEMA (tukar di sini untuk ubah seluruh warna) ── */
+    :root {
+      --gold:      #C9A84C;
+      --gold-lt:   #F0D890;
+      --gold-dk:   #9A7A2E;
+      --ink:       #0F1923;
+      --ink-soft:  #3A4A5A;
+      --ink-muted: #6B7A8D;
+      --cream:     #FAF8F3;
+      --white:     #FFFFFF;
+      --rule:      #E2DDD4;
+      --accent:    #1B4F72;
+      --red-bg:    #FFF0F0; --red:    #C0392B;
+      --blue-bg:   #EEF3FF; --blue:   #2455A4;
+      --yellow-bg: #FFFBEB; --yellow: #B8860B;
+      --shadow-sm: 0 2px 8px rgba(15,25,35,.08);
+      --shadow-md: 0 6px 24px rgba(15,25,35,.12);
+      --shadow-lg: 0 16px 48px rgba(15,25,35,.16);
+      --radius: 14px;
+      --tr: all .22s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── NAVBAR ── */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 68px; background: rgba(15,25,35,.93); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,.2); }
+    .nb-brand { display: flex; align-items: center; gap: 12px; }
+    .nb-logo { width: 38px; height: 38px; border-radius: 8px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem; color: var(--ink); }
+    .nb-name { font-size: .8rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--white); line-height: 1.3; }
+    .nb-name span { display: block; color: var(--gold); font-size: .63rem; letter-spacing: .12em; }
+    .nb-links { display: flex; align-items: center; gap: 30px; list-style: none; }
+    .nb-links a { font-size: .8rem; font-weight: 500; color: rgba(255,255,255,.65); letter-spacing: .04em; transition: var(--tr); position: relative; padding-bottom: 2px; }
+    .nb-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: var(--gold); transition: width .22s; }
+    .nb-links a:hover { color: var(--gold-lt); }
+    .nb-links a:hover::after { width: 100%; }
+    .nb-btn { background: var(--gold); color: var(--ink); border: none; border-radius: 8px; padding: 9px 20px; font-family: 'DM Sans', sans-serif; font-size: .8rem; font-weight: 700; cursor: pointer; transition: var(--tr); }
+    .nb-btn:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero { min-height: 100vh; background: var(--ink); display: flex; align-items: center; position: relative; overflow: hidden; padding: 120px 48px 80px; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,.08) 0%, transparent 70%), radial-gradient(ellipse 40% 40% at 20% 80%, rgba(27,79,114,.15) 0%, transparent 60%); }
+    .hero-grid { position: absolute; inset: 0; opacity: .04; background-image: linear-gradient(rgba(201,168,76,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,.8) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: .7rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,.4); border-radius: 20px; padding: 5px 16px; margin-bottom: 28px; }
+    .htdot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4.5vw, 3.6rem); font-weight: 900; line-height: 1.12; color: var(--white); margin-bottom: 22px; letter-spacing: -.02em; }
+    .hero h1 em { font-style: italic; color: var(--gold-lt); }
+    .hero-desc { font-size: 1rem; color: rgba(255,255,255,.58); line-height: 1.78; margin-bottom: 38px; max-width: 480px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--ink); border: none; border-radius: 10px; padding: 14px 28px; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 700; cursor: pointer; transition: var(--tr); box-shadow: 0 4px 20px rgba(201,168,76,.35); }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,.45); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,.22); border-radius: 10px; padding: 14px 28px; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600; cursor: pointer; transition: var(--tr); }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold-lt); transform: translateY(-2px); }
+    .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .stat-card { background: rgba(255,255,255,.05); border: 1px solid rgba(201,168,76,.15); border-radius: var(--radius); padding: 24px; backdrop-filter: blur(8px); transition: var(--tr); }
+    .stat-card:hover { background: rgba(201,168,76,.08); border-color: rgba(201,168,76,.35); transform: translateY(-3px); }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+    .stat-label { font-size: .75rem; color: rgba(255,255,255,.48); letter-spacing: .06em; text-transform: uppercase; }
+
+    /* ── SECTIONS ── */
+    section { padding: 100px 48px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .sec-label { font-size: .68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .sec-title { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 3.5vw, 2.5rem); font-weight: 900; color: var(--ink); line-height: 1.2; margin-bottom: 14px; }
+    .sec-title.lt { color: var(--white); }
+    .sec-desc { font-size: .97rem; color: var(--ink-muted); line-height: 1.78; max-width: 540px; }
+    .sec-desc.lt { color: rgba(255,255,255,.58); }
+    .sec-head { margin-bottom: 52px; }
+    .gold-line { width: 44px; height: 3px; background: var(--gold); border-radius: 2px; margin-bottom: 14px; }
+
+    /* ── BERITA ── */
+    #berita { background: var(--white); }
+    .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+    .news-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--rule); box-shadow: var(--shadow-sm); transition: var(--tr); background: var(--white); }
+    .news-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .nc-img { height: 170px; background: linear-gradient(135deg, var(--ink) 0%, var(--accent) 100%); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; position: relative; overflow: hidden; }
+    .nc-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(15,25,35,.35)); }
+    .nc-body { padding: 22px; }
+    .nc-cat { font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .nc-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 9px; line-height: 1.35; }
+    .nc-excerpt { font-size: .83rem; color: var(--ink-muted); line-height: 1.65; margin-bottom: 14px; }
+    .nc-meta { display: flex; align-items: center; justify-content: space-between; font-size: .73rem; color: var(--ink-muted); }
+    .nc-link { font-size: .76rem; font-weight: 600; color: var(--gold); display: inline-flex; align-items: center; gap: 4px; transition: var(--tr); }
+    .nc-link:hover { color: var(--gold-dk); gap: 8px; }
+
+    /* ── PENCAPAIAN ── */
+    #pencapaian { background: var(--ink); }
+    .ach-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .ach-card { background: rgba(255,255,255,.04); border: 1px solid rgba(201,168,76,.14); border-radius: var(--radius); padding: 30px 22px; text-align: center; transition: var(--tr); }
+    .ach-card:hover { background: rgba(201,168,76,.08); border-color: rgba(201,168,76,.38); transform: translateY(-4px); }
+    .ach-icon { font-size: 2.2rem; margin-bottom: 14px; }
+    .ach-title { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.35; }
+    .ach-desc { font-size: .78rem; color: rgba(255,255,255,.48); line-height: 1.62; }
+    .ach-year { display: inline-block; margin-top: 14px; font-size: .66rem; font-weight: 700; letter-spacing: .1em; color: var(--gold); background: rgba(201,168,76,.12); border-radius: 20px; padding: 3px 12px; }
+
+    /* ── OLAHRAGA ── */
+    #olahraga { background: var(--cream); }
+    .print-bar-local { display: flex; align-items: center; justify-content: space-between; background: var(--ink); border-radius: var(--radius); padding: 14px 24px; margin-bottom: 28px; }
+    .print-bar-local span { font-size: .82rem; color: rgba(255,255,255,.65); font-weight: 500; }
+    .print-bar-local strong { color: var(--gold-lt); }
+    .btn-print-all { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--ink); border: none; border-radius: 8px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 700; cursor: pointer; transition: var(--tr); }
+    .btn-print-all:hover { background: var(--gold-lt); transform: translateY(-1px); }
+    .btn-print-all svg { width: 15px; height: 15px; fill: var(--ink); }
+    .tabs { display: flex; gap: 4px; background: rgba(15,25,35,.07); border-radius: 10px; padding: 4px; margin-bottom: 28px; width: fit-content; }
+    .tab-btn { padding: 10px 24px; border-radius: 8px; border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 600; cursor: pointer; color: var(--ink-muted); transition: var(--tr); }
+    .tab-btn.active { background: var(--ink); color: var(--gold-lt); }
+    .tab-btn:hover:not(.active) { background: rgba(15,25,35,.09); color: var(--ink); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .event-block { margin-bottom: 22px; }
+    .event-block-header { margin-bottom: 5px; }
+    .btn-print-event { display: inline-flex; align-items: center; gap: 5px; background: transparent; color: var(--ink-muted); border: 1px solid var(--rule); border-radius: 6px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: .71rem; font-weight: 600; cursor: pointer; transition: var(--tr); }
+    .btn-print-event:hover { background: var(--ink); color: var(--gold-lt); border-color: var(--ink); }
+    .btn-print-event:hover svg { fill: var(--gold); }
+    .btn-print-event svg { width: 12px; height: 12px; fill: var(--ink-muted); transition: fill .18s; }
+    .table-wrap { border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--rule); }
+    table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+    thead tr { background: var(--ink); color: var(--gold-lt); }
+    thead th { font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 11px 16px; text-align: left; }
+    tbody tr { background: var(--white); transition: background .15s; }
+    tbody tr:nth-child(even) { background: rgba(201,168,76,.05); }
+    tbody tr:hover { background: rgba(201,168,76,.12); }
+    tbody td { padding: 11px 16px; vertical-align: middle; color: var(--ink-soft); }
+    tbody td:first-child { color: var(--ink); font-weight: 500; }
+    .rank { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+    .rank.johan { color: #B8860B; } .rank.naib { color: #5A6EA0; } .rank.ketiga { color: #8B5E3C; }
+    .team-pill { display: inline-flex; align-items: center; gap: 5px; border-radius: 20px; padding: 3px 11px; font-size: .75rem; font-weight: 600; white-space: nowrap; }
+    .team-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .team-pill.merah { background: var(--red-bg); color: var(--red); } .team-pill.merah .dot { background: var(--red); }
+    .team-pill.biru  { background: var(--blue-bg); color: var(--blue); } .team-pill.biru  .dot { background: var(--blue); }
+    .team-pill.kuning{ background: var(--yellow-bg);color: var(--yellow);} .team-pill.kuning .dot{background:var(--yellow);}
+    .catatan { display: inline-block; background: rgba(15,25,35,.07); color: var(--ink); border-radius: 4px; padding: 2px 8px; font-size: .74rem; font-family: 'DM Mono', monospace; }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; font-size: .74rem; font-weight: 600; border-radius: 20px; padding: 5px 14px; }
+    .badge-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .badge.merah  { background: var(--red-bg); color: var(--red); } .badge.merah  .badge-dot { background: var(--red); }
+    .badge.biru   { background: var(--blue-bg); color: var(--blue); } .badge.biru   .badge-dot { background: var(--blue); }
+    .badge.kuning { background: var(--yellow-bg); color: var(--yellow); } .badge.kuning .badge-dot { background: var(--yellow); }
+    .sub-label { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-muted); margin: 24px 0 10px; }
+    .relay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+    .relay-card { border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-sm); }
+    .relay-card-top { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--ink); }
+    .relay-card-title { color: var(--gold-lt); font-size: .67rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .btn-print-relay { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.1); color: var(--gold-lt); border: 1px solid rgba(240,216,144,.3); border-radius: 5px; padding: 4px 10px; font-family: 'DM Sans', sans-serif; font-size: .63rem; font-weight: 600; cursor: pointer; transition: var(--tr); }
+    .btn-print-relay:hover { background: rgba(255,255,255,.2); }
+    .btn-print-relay svg { width: 11px; height: 11px; fill: var(--gold); }
+    .relay-item { padding: 12px 16px; border-bottom: 1px solid var(--rule); background: var(--white); }
+    .relay-item:nth-child(odd) { background: rgba(201,168,76,.03); }
+    .relay-item:last-child { border-bottom: none; }
+    .relay-rank { font-weight: 700; margin-bottom: 4px; font-size: .83rem; }
+    .relay-rank.johan { color: #B8860B; } .relay-rank.naib { color: #5A6EA0; } .relay-rank.ketiga { color: #8B5E3C; }
+    .relay-names { font-size: .79rem; color: var(--ink-soft); line-height: 1.6; }
+    .relay-names span::after { content: ' ·'; color: var(--rule); }
+    .relay-names span:last-child::after { content: ''; }
+
+    /* ── HUBUNGI ── */
+    #hubungi { background: var(--ink); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .ci { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 28px; }
+    .ci-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem; }
+    .ci-lbl { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+    .ci-val { font-size: .9rem; color: rgba(255,255,255,.72); line-height: 1.65; }
+    .contact-form { background: rgba(255,255,255,.04); border: 1px solid rgba(201,168,76,.14); border-radius: var(--radius); padding: 34px; }
+    .fg { margin-bottom: 18px; }
+    .fl { display: block; font-size: .73rem; font-weight: 600; letter-spacing: .08em; color: rgba(255,255,255,.55); text-transform: uppercase; margin-bottom: 7px; }
+    .fi { width: 100%; padding: 11px 15px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.11); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--white); transition: var(--tr); }
+    .fi:focus { outline: none; border-color: var(--gold); background: rgba(201,168,76,.06); }
+    .fi::placeholder { color: rgba(255,255,255,.28); }
+    textarea.fi { resize: vertical; min-height: 108px; }
+
+    /* ── FOOTER ── */
+    .site-footer { background: #07121A; padding: 36px 48px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(201,168,76,.1); }
+    .f-brand { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--white); }
+    .f-brand span { color: var(--gold); }
+    .f-copy { font-size: .75rem; color: rgba(255,255,255,.32); }
+    .f-links { display: flex; gap: 22px; }
+    .f-links a { font-size: .75rem; color: rgba(255,255,255,.42); transition: var(--tr); }
+    .f-links a:hover { color: var(--gold); }
+
+    /* ── PRINT ── */
+    @media print {
+      .navbar,.hero,#berita,#pencapaian,#hubungi,.site-footer,.tabs,.print-bar-local,.btn-print-all,.btn-print-event,.btn-print-relay,.legend { display: none !important; }
+      #olahraga { padding: 20px; }
+      .tab-content { display: block !important; }
+      thead tr { background: #0F1923 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .relay-card-top { background: #0F1923 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .table-wrap { box-shadow: none; border: 1px solid #ccc; }
+      tbody tr:nth-child(even) { background: #fdf9f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .team-pill.merah{background:#FFF0F0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .team-pill.biru{background:#EEF3FF!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .team-pill.kuning{background:#FFFBEB!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .navbar { padding: 0 22px; }
+      .nb-links { display: none; }
+      section { padding: 64px 22px; }
+      .hero { padding: 95px 22px 56px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+      .news-grid { grid-template-columns: 1fr; }
+      .ach-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+      .site-footer { flex-direction: column; gap: 14px; text-align: center; }
+      .f-links { justify-content: center; }
+      .relay-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="navbar">
+  <div class="nb-brand">
+    <div class="nb-logo">SK</div>
+    <!-- ✏️ EDIT BARIS INI: Nama sekolah dalam navbar -->
+    <div class="nb-name">
+      Sekolah Kebangsaan Karamatoi
+      <span>Keningau, Sabah</span>
+    </div>
+  </div>
+  <ul class="nb-links">
+    <li><a href="#berita">Berita</a></li>
+    <li><a href="#pencapaian">Pencapaian</a></li>
+    <li><a href="#olahraga">Olahraga 2025</a></li>
+    <li><a href="#hubungi">Hubungi</a></li>
+  </ul>
+  <button class="nb-btn" onclick="document.getElementById('hubungi').scrollIntoView({behavior:'smooth'})">Hubungi Kami</button>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="utama">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag"><span class="htdot"></span>Sekolah Kebangsaan Karamatoi</div>
+      <!-- ✏️ EDIT: Tagline utama -->
+      <h1>Membina <em>Generasi</em> Cemerlang Bersama</h1>
+      <!-- ✏️ EDIT: Penerangan sekolah -->
+      <p class="hero-desc">SK Karamatoi komited dalam melahirkan pelajar yang berpengetahuan, berakhlak mulia, dan berdaya saing di peringkat kebangsaan dan antarabangsa.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('olahraga').scrollIntoView({behavior:'smooth'})">🏆 Keputusan Olahraga 2025</button>
+        <button class="btn-outline" onclick="document.getElementById('berita').scrollIntoView({behavior:'smooth'})">Berita Terkini →</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <!-- ✏️ EDIT: Nombor statistik sekolah -->
+      <div class="stat-card"><div class="stat-num">450+</div><div class="stat-label">Murid Berdaftar</div></div>
+      <div class="stat-card"><div class="stat-num">38</div><div class="stat-label">Guru Berpengalaman</div></div>
+      <div class="stat-card"><div class="stat-num">15+</div><div class="stat-label">Tahun Kecemerlangan</div></div>
+      <div class="stat-card"><div class="stat-num">92%</div><div class="stat-label">Kadar Lulus UPSR</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ BERITA ══════════ -->
+<section id="berita">
+  <div class="container">
+    <div class="sec-head">
+      <div class="gold-line"></div>
+      <div class="sec-label">Berita &amp; Pengumuman</div>
+      <h2 class="sec-title">Terkini dari SK Karamatoi</h2>
+    </div>
+    <div class="news-grid">
+
+      <!-- ✏️ EDIT KAD BERITA 1 -->
+      <div class="news-card">
+        <div class="nc-img">🏃</div>
+        <div class="nc-body">
+          <div class="nc-cat">Sukan &amp; Olahraga</div>
+          <div class="nc-title">Kejohanan Olahraga Tahunan 2025 Berjaya Dilaksanakan</div>
+          <div class="nc-excerpt">Lebih 200 murid menyertai pelbagai acara olahraga termasuk lari pecut, lompat jauh, lompat tinggi dan acara relay dalam suasana meriah.</div>
+          <div class="nc-meta"><span>4 Mei 2025</span><a href="#olahraga" class="nc-link">Lihat Keputusan →</a></div>
+        </div>
+      </div>
+
+      <!-- ✏️ EDIT KAD BERITA 2 -->
+      <div class="news-card">
+        <div class="nc-img">📚</div>
+        <div class="nc-body">
+          <div class="nc-cat">Akademik</div>
+          <div class="nc-title">Program Literasi &amp; Numerasi Fasa 2 Bermula</div>
+          <div class="nc-excerpt">SK Karamatoi melancarkan fasa kedua program LINUS untuk memastikan semua murid Tahun 1–3 mencapai tahap literasi yang ditetapkan.</div>
+          <div class="nc-meta"><span>28 April 2025</span><a href="#" class="nc-link">Baca Lagi →</a></div>
+        </div>
+      </div>
+
+      <!-- ✏️ EDIT KAD BERITA 3 -->
+      <div class="news-card">
+        <div class="nc-img">🎨</div>
+        <div class="nc-body">
+          <div class="nc-cat">Ko-Kurikulum</div>
+          <div class="nc-title">Pameran Seni &amp; Kraftangan Murid Tahun 6</div>
+          <div class="nc-excerpt">Murid-murid Tahun 6 menunjukkan bakat seni melalui pameran lukisan, kraftangan tradisi dan pertunjukan budaya yang memukau.</div>
+          <div class="nc-meta"><span>20 April 2025</span><a href="#" class="nc-link">Baca Lagi →</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PENCAPAIAN ══════════ -->
+<section id="pencapaian">
+  <div class="container">
+    <div class="sec-head">
+      <div class="gold-line"></div>
+      <div class="sec-label">Kebanggaan Kami</div>
+      <h2 class="sec-title lt">Pencapaian Cemerlang</h2>
+      <p class="sec-desc lt">Rekod kejayaan yang membuktikan komitmen warga SK Karamatoi dalam bidang akademik, sukan, dan sahsiah.</p>
+    </div>
+    <div class="ach-grid">
+
+      <!-- ✏️ EDIT: Senarai pencapaian (ikon, tajuk, penerangan, tahun) -->
+      <div class="ach-card"><div class="ach-icon">🥇</div><div class="ach-title">Johan Olahraga Daerah Keningau</div><div class="ach-desc">Pasukan olahraga SK Karamatoi meraih kejuaraan peringkat daerah dalam pelbagai acara.</div><span class="ach-year">2024</span></div>
+      <div class="ach-card"><div class="ach-icon">🏆</div><div class="ach-title">Sekolah Berprestasi Tinggi</div><div class="ach-desc">Diiktiraf sebagai sekolah berprestasi tinggi oleh Jabatan Pendidikan Negeri Sabah.</div><span class="ach-year">2023</span></div>
+      <div class="ach-card"><div class="ach-icon">🎓</div><div class="ach-title">100% Kelulusan UPSR</div><div class="ach-desc">Semua calon UPSR SK Karamatoi berjaya lulus dengan cemerlang dalam semua mata pelajaran.</div><span class="ach-year">2023</span></div>
+      <div class="ach-card"><div class="ach-icon">🌿</div><div class="ach-title">Sekolah Hijau Perak</div><div class="ach-desc">Menerima Anugerah Sekolah Hijau Perak atas usaha menjaga alam sekitar di peringkat sekolah.</div><span class="ach-year">2024</span></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ KEPUTUSAN OLAHRAGA ══════════ -->
+<section id="olahraga">
+  <div class="container">
+    <div class="sec-head">
+      <div class="gold-line"></div>
+      <div class="sec-label">Rekod Rasmi 2025</div>
+      <h2 class="sec-title">Keputusan Kejohanan Olahraga</h2>
+      <p class="sec-desc">Senarai penuh pemenang bagi semua acara individu dan berpasukan.</p>
+    </div>
+
+    <div class="print-bar-local">
+      <span><strong>SK Karamatoi</strong> &nbsp;·&nbsp; Kejohanan Olahraga 2025</span>
+      <button class="btn-print-all" onclick="window.print()">
+        <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+        Cetak Keputusan
+      </button>
+    </div>
+
+    <div class="legend">
+      <span class="badge merah"><span class="badge-dot"></span>Pasukan Merah</span>
+      <span class="badge biru"><span class="badge-dot"></span>Pasukan Biru</span>
+      <span class="badge kuning"><span class="badge-dot"></span>Pasukan Kuning</span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('lelaki',this)">🏃 Lelaki</button>
+      <button class="tab-btn" onclick="switchTab('perempuan',this)">🏃 Perempuan</button>
+      <button class="tab-btn" onclick="switchTab('relay',this)">👥 Relay</button>
+    </div>
+
+    <!-- ── TAB LELAKI ── -->
+    <div class="tab-content active" id="tab-lelaki">
+      <!-- ✏️ EDIT: Data acara lelaki -->
+
+      <div class="event-block" id="ev-lompat-jauh-l">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-lompat-jauh-l','Lompat Jauh (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">🏃 Lompat Jauh (Lelaki)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Biliandh Antaim</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td><span class="catatan">3.35 m</span></td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Sajewea Xaver Rayner</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td><span class="catatan">3.34 m</span></td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Alvinoh Edward</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td><span class="catatan">3.30 m</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-lompat-tinggi-l">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-lompat-tinggi-l','Lompat Tinggi (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">🏃 Lompat Tinggi (Lelaki)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Jayden Wong Jun Wei</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td><span class="catatan">1.00 m</span></td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Sylvester Susun</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td><span class="catatan">0.98 m</span></td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Steley Bin Gul</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td><span class="catatan">0.98 m</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-lontar-peluru-l">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-lontar-peluru-l','Lontar Peluru (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">⚫ Lontar Peluru (Lelaki)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Jeffryeck Samarudin</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Adrian Abelcheo</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Muhammad Idris</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-100m-l">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-100m-l','100 Meter (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">⚡ 100 Meter (Lelaki)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Jayden Wong Jun Wei</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Arryan Bin Abdullah</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Ivan Jay Dedy Indra</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-200m-l">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-200m-l','200 Meter (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">⚡ 200 Meter (Lelaki)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Ivan Jay Dedy Indra</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Ryanalfino Johneysius</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Sajewea Xaver Rayner</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ── TAB PEREMPUAN ── -->
+    <div class="tab-content" id="tab-perempuan">
+      <!-- ✏️ EDIT: Data acara perempuan -->
+
+      <div class="event-block" id="ev-lompat-jauh-p">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-lompat-jauh-p','Lompat Jauh (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">🏃 Lompat Jauh (Perempuan)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Sherrley Binti Jeferin</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Lolisah Josie</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Arisyah Maisarah Binti Abdullah</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-lompat-tinggi-p">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-lompat-tinggi-p','Lompat Tinggi (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">🏃 Lompat Tinggi (Perempuan)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Novilla Johan</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td><span class="catatan">1.03 m</span></td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Siti Nursyawallellah Binti Saffawi</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td><span class="catatan">1.02 m</span></td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Jailianah James</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td><span class="catatan">0.98 m</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-lontar-peluru-p">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-lontar-peluru-p','Lontar Peluru (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">⚫ Lontar Peluru (Perempuan)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Jueyencie Francis</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Maillianah Binti Buas</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Nabiha Binti Abdullah</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-100m-p">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-100m-p','100 Meter (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">⚡ 100 Meter (Perempuan)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Avvygraceka Aludin</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Jueyencie Francis</td><td><span class="team-pill biru"><span class="dot"></span>Biru</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Nur Ariana Khairunnisa Binti Rais</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="event-block" id="ev-200m-p">
+        <div class="event-block-header"><button class="btn-print-event" onclick="printEvent('ev-200m-p','200 Meter (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak Acara Ini</button></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th colspan="4">⚡ 200 Meter (Perempuan)</th></tr><tr><th>Kedudukan</th><th>Nama Pemenang</th><th>Pasukan</th><th>Catatan</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rank johan">🥇 Johan</span></td><td>Avvygraceka Aludin</td><td><span class="team-pill merah"><span class="dot"></span>Merah</span></td><td>—</td></tr>
+            <tr><td><span class="rank naib">🥈 Naib Johan</span></td><td>Nellsa Eliza Tiaman @ Taimon</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+            <tr><td><span class="rank ketiga">🥉 Ketiga</span></td><td>Farah Nurfitrisyah Binti Hammad Idris</td><td><span class="team-pill kuning"><span class="dot"></span>Kuning</span></td><td>—</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- ── TAB RELAY ── -->
+    <div class="tab-content" id="tab-relay">
+      <!-- ✏️ EDIT: Data relay lelaki -->
+      <p class="sub-label">— Lelaki —</p>
+      <div class="relay-grid">
+        <div class="relay-card" id="ev-relay-4x100-l">
+          <div class="relay-card-top"><span class="relay-card-title">⚡ 4×100M (Lelaki)</span><button class="btn-print-relay" onclick="printEvent('ev-relay-4x100-l','4×100M Relay (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak</button></div>
+          <div class="relay-item"><div class="relay-rank johan">🥇 Johan</div><div class="relay-names"><span>Jayden Wong Jun Wei</span><span>Sajewea Xaver Rayner</span><span>Jenelson Samarudin</span><span>Rezalmi Udi</span></div></div>
+          <div class="relay-item"><div class="relay-rank naib">🥈 Naib Johan</div><div class="relay-names"><span>Ryanalfino Johneysius</span><span>Arryan Bin Abdullah</span><span>Ifan Intang</span><span>Muhammad Firash Amsyar</span></div></div>
+          <div class="relay-item"><div class="relay-rank ketiga">🥉 Ketiga</div><div class="relay-names"><span>Ivan Jay Dedy Indra</span><span>Alvinoh Edward</span><span>Hezroneildy Hildy</span><span>Firhan Bin Mohd Jazlie Jiji</span></div></div>
+        </div>
+        <div class="relay-card" id="ev-relay-4x200-l">
+          <div class="relay-card-top"><span class="relay-card-title">⚡ 4×200M (Lelaki)</span><button class="btn-print-relay" onclick="printEvent('ev-relay-4x200-l','4×200M Relay (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak</button></div>
+          <div class="relay-item"><div class="relay-rank johan">🥇 Johan</div><div class="relay-names"><span>Jenelson Samarudin</span><span>Sajewea Xaver Rayner</span><span>Rezalmi Udi</span><span>Jayden Wong Jun Wei</span></div></div>
+          <div class="relay-item"><div class="relay-rank naib">🥈 Naib Johan</div><div class="relay-names"><span>Ivan Jay Dedy Indra</span><span>Hezroneildy Hildy</span><span>Jay Jazlie Jiji</span><span>Alvinoh Edward</span></div></div>
+          <div class="relay-item"><div class="relay-rank ketiga">🥉 Ketiga</div><div class="relay-names"><span>Ifan Intang</span><span>Ryanalfino Johneysius</span><span>Muhammad Firash Amsyar</span><span>Johendy Aerdeenly</span></div></div>
+        </div>
+        <div class="relay-card" id="ev-relay-50x4-l" style="grid-column:1/-1;">
+          <div class="relay-card-top"><span class="relay-card-title">🏃 50×4 (Lelaki)</span><button class="btn-print-relay" onclick="printEvent('ev-relay-50x4-l','50×4 Relay (Lelaki)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak</button></div>
+          <div class="relay-item"><div class="relay-rank johan">🥇 Johan</div><div class="relay-names"><span>Aiden Adrien Bin Abdullah</span><span>Addryriano Edward</span><span>Diffmexroll Piturus</span><span>Alveronce Terrance</span></div></div>
+          <div class="relay-item"><div class="relay-rank naib">🥈 Naib Johan</div><div class="relay-names"><span>Jeffryecko Samarudin</span><span>Jay Jazlie Jiji</span><span>Jolleyno Jonie</span><span>Jackroy Johan</span></div></div>
+          <div class="relay-item"><div class="relay-rank ketiga">🥉 Ketiga</div><div class="relay-names"><span>Muhammad Khairulnizam Bin Razif</span><span>Muhammad Hairulnizam Bin Razif</span><span>Ryanalfanico Johneysius</span><span>Mohammad Khodhir Azmi Bin Abdullah</span></div></div>
+        </div>
+      </div>
+
+      <!-- ✏️ EDIT: Data relay perempuan -->
+      <p class="sub-label" style="margin-top:32px;">— Perempuan —</p>
+      <div class="relay-grid">
+        <div class="relay-card" id="ev-relay-4x100-p">
+          <div class="relay-card-top"><span class="relay-card-title">⚡ 4×100M (Perempuan)</span><button class="btn-print-relay" onclick="printEvent('ev-relay-4x100-p','4×100M Relay (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak</button></div>
+          <div class="relay-item"><div class="relay-rank johan">🥇 Johan</div><div class="relay-names" style="font-style:italic;color:#aaa;">Tiada rekod nama (rujuk pasukan)</div></div>
+          <div class="relay-item"><div class="relay-rank naib">🥈 Naib Johan</div><div class="relay-names"><span>Jueyencie Francis</span><span>Avvylyen Aludin</span><span>Siti Nursyawallellah Binti Saffawi</span><span>Vrencela Christopher</span></div></div>
+          <div class="relay-item"><div class="relay-rank ketiga">🥉 Ketiga</div><div class="relay-names"><span>Nellsa Eliza Tiaman @ Taimon</span><span>Ziziebella Binti Jaie</span><span>Farah Nur Fitrisyah</span><span>Avvygraceka Aludin</span><span>Nur Ariana Khairunnisa</span><span>Novilla Johan</span><span>Aisyah Maisarah</span></div></div>
+        </div>
+        <div class="relay-card" id="ev-relay-4x200-p">
+          <div class="relay-card-top"><span class="relay-card-title">⚡ 4×200M (Perempuan)</span><button class="btn-print-relay" onclick="printEvent('ev-relay-4x200-p','4×200M Relay (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak</button></div>
+          <div class="relay-item"><div class="relay-rank johan">🥇 Johan</div><div class="relay-names"><span>Avvygraceka Aludin</span><span>Novilla Johan</span><span>Britney</span><span>Dea Armel Elysa Binti Weleam</span></div></div>
+          <div class="relay-item"><div class="relay-rank naib">🥈 Naib Johan</div><div class="relay-names"><span>Ziziebella Binti Jaie</span><span>Farah Nur Fitrisyah</span><span>Maillianah Binti Buas</span><span>Nellsa Eliza Tiaman @ Taimon</span></div></div>
+          <div class="relay-item"><div class="relay-rank ketiga">🥉 Ketiga</div><div class="relay-names"><span>Jueyencie Francis</span><span>Siti Nursyawallellah</span><span>Vrencela Christopher</span><span>Avvylyen Aludin</span></div></div>
+        </div>
+        <div class="relay-card" id="ev-relay-50x4-p" style="grid-column:1/-1;">
+          <div class="relay-card-top"><span class="relay-card-title">🏃 50×4 (Perempuan)</span><button class="btn-print-relay" onclick="printEvent('ev-relay-50x4-p','50×4 Relay (Perempuan)')"><svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>Cetak</button></div>
+          <div class="relay-item"><div class="relay-rank johan">🥇 Johan</div><div class="relay-names"><span>Jusmarliyla Maritanus</span><span>Jaskina Mathius</span><span>Emelia Udi</span><span>Maria Petronila Disyon</span></div></div>
+          <div class="relay-item"><div class="relay-rank naib">🥈 Naib Johan</div><div class="relay-names"><span>Avvylyen Aludin</span><span>Nurquhnadyrah Maizatul Binti Fadzly</span><span>Cassandra Rissa Ansaap</span><span>Airani Fadila Binti Epol</span></div></div>
+          <div class="relay-item"><div class="relay-rank ketiga">🥉 Ketiga</div><div class="relay-names"><span>Zeline Eder</span><span>Raycca Vanessa Rayner</span><span>Noor Syafirah Binti Alimudin</span><span>Sylvia Wong Mei Chi</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HUBUNGI ══════════ -->
+<section id="hubungi">
+  <div class="container">
+    <div class="sec-head">
+      <div class="gold-line"></div>
+      <div class="sec-label">Hubungi Kami</div>
+      <h2 class="sec-title lt">Kami Sedia Membantu</h2>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <!-- ✏️ EDIT: Maklumat hubungan -->
+        <div class="ci"><div class="ci-icon">📍</div><div><div class="ci-lbl">Alamat</div><div class="ci-val">Sekolah Kebangsaan Karamatoi<br/>Peti Surat 123, 89008 Keningau<br/>Sabah, Malaysia</div></div></div>
+        <div class="ci"><div class="ci-icon">📞</div><div><div class="ci-lbl">Telefon</div><div class="ci-val">087-000 000</div></div></div>
+        <div class="ci"><div class="ci-icon">✉️</div><div><div class="ci-lbl">E-mel</div><div class="ci-val">skkaramatoi@moe.gov.my</div></div></div>
+        <div class="ci"><div class="ci-icon">🕐</div><div><div class="ci-lbl">Waktu Pejabat</div><div class="ci-val">Isnin – Jumaat: 7:30 pagi – 5:00 petang<br/>Sabtu – Ahad: Tutup</div></div></div>
+      </div>
+      <div class="contact-form">
+        <div class="fg"><label class="fl">Nama Penuh</label><input type="text" class="fi" placeholder="Masukkan nama anda"/></div>
+        <div class="fg"><label class="fl">E-mel</label><input type="email" class="fi" placeholder="email@contoh.com"/></div>
+        <div class="fg"><label class="fl">Mesej</label><textarea class="fi" placeholder="Taip mesej anda di sini..."></textarea></div>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="alert('Terima kasih! Mesej anda telah dihantar.')">Hantar Mesej ✉️</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="site-footer">
+  <div class="f-brand">SK <span>Karamatoi</span></div>
+  <!-- ✏️ EDIT: Tahun hak cipta -->
+  <div class="f-copy">© 2025 Sekolah Kebangsaan Karamatoi. Hak Cipta Terpelihara.</div>
+  <div class="f-links">
+    <a href="#utama">Utama</a>
+    <a href="#berita">Berita</a>
+    <a href="#olahraga">Olahraga</a>
+    <a href="#hubungi">Hubungi</a>
+  </div>
+</footer>
+
+<script>
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function printEvent(id,title){
+  var el=document.getElementById(id);if(!el)return;
+  var w=window.open('','_blank','width=900,height=700');
+  var css=':root{--gold:#C9A84C;--gold-lt:#F0D890;--ink:#0F1923;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:sans-serif;background:white;color:#0F1923;padding:32px;}.ph{text-align:center;background:#0F1923;color:white;padding:24px;border-radius:10px;margin-bottom:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.ph .sc{font-size:.7rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#C9A84C;border:1px solid #C9A84C;border-radius:2px;padding:3px 12px;display:inline-block;margin-bottom:10px;}.ph h1{font-size:1.3rem;font-weight:900;color:white;margin-bottom:4px;}.ph p{font-size:.76rem;color:rgba(255,255,255,.6);}.gb{height:3px;background:linear-gradient(90deg,#C9A84C,#F0D890,#C9A84C);margin-bottom:22px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.et{font-size:1.05rem;font-weight:700;color:#0F1923;margin-bottom:10px;padding-bottom:7px;border-bottom:2px solid #C9A84C;}.table-wrap{border-radius:8px;overflow:hidden;border:1px solid #E2DDD4;}table{width:100%;border-collapse:collapse;font-size:.87rem;}thead tr{background:#0F1923!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}thead th{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:10px 14px;text-align:left;color:#F0D890;}tbody tr{background:white;}tbody tr:nth-child(even){background:#fdf9f0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}tbody td{padding:10px 14px;color:#3A4A5A;}tbody td:first-child{color:#0F1923;font-weight:500;}.rank{display:inline-flex;align-items:center;gap:6px;font-weight:600;}.rank.johan{color:#B8860B;}.rank.naib{color:#5A6EA0;}.rank.ketiga{color:#8B5E3C;}.team-pill{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:3px 10px;font-size:.74rem;font-weight:600;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.team-pill .dot{width:7px;height:7px;border-radius:50%;}.team-pill.merah{background:#FFF0F0;color:#C0392B;}.team-pill.merah .dot{background:#C0392B;}.team-pill.biru{background:#EEF3FF;color:#2455A4;}.team-pill.biru .dot{background:#2455A4;}.team-pill.kuning{background:#FFFBEB;color:#B8860B;}.team-pill.kuning .dot{background:#B8860B;}.catatan{background:rgba(15,25,35,.07);color:#0F1923;border-radius:4px;padding:2px 8px;font-size:.73rem;}.relay-card{border:1px solid #E2DDD4;border-radius:8px;overflow:hidden;}.relay-card-top{background:#0F1923!important;padding:10px 14px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.relay-card-title{color:#F0D890;font-size:.67rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}.relay-item{padding:10px 14px;border-bottom:1px solid #E2DDD4;background:white;}.relay-item:nth-child(even){background:#fdf9f0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.relay-item:last-child{border-bottom:none;}.relay-rank{font-weight:700;margin-bottom:4px;font-size:.82rem;}.relay-rank.johan{color:#B8860B;}.relay-rank.naib{color:#5A6EA0;}.relay-rank.ketiga{color:#8B5E3C;}.relay-names{font-size:.78rem;color:#3A4A5A;line-height:1.58;}.relay-names span::after{content:" · ";}.relay-names span:last-child::after{content:"";}.btn-print-event,.btn-print-relay,.event-block-header{display:none!important;}.pf{margin-top:22px;text-align:center;font-size:.7rem;color:rgba(15,25,35,.38);border-top:1px solid #E2DDD4;padding-top:12px;}';
+  w.document.write('<!DOCTYPE html><html lang="ms"><head><meta charset="UTF-8"/><title>'+title+' – SK Karamatoi</title><style>'+css+'</style></head><body>');
+  w.document.write('<div class="ph"><div class="sc">SK Karamatoi</div><h1>Keputusan Rasmi Kejohanan Olahraga 2025</h1><p>Rekod Rasmi Acara Individu &amp; Berpasukan</p></div>');
+  w.document.write('<div class="gb"></div><p class="et">'+title+'</p>');
+  w.document.write(el.innerHTML.replace(/<button[^>]*>[\s\S]*?<\/button>/gi,'').replace(/<div class="event-block-header">[\s\S]*?<\/div>/i,''));
+  w.document.write('<div class="pf">Dokumen Rasmi &nbsp;·&nbsp; SK Karamatoi &nbsp;·&nbsp; Kejohanan Olahraga 2025</div></body></html>');
+  w.document.close();
+  setTimeout(function(){w.print();},600);
+}
+</script>
+</body>
+</html>
